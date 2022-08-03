@@ -65,7 +65,13 @@ public struct Digest {
   /// - parameter variant: SHA-2 variant
   /// - returns: Digest bytes
   public static func sha2(_ bytes: Array<UInt8>, variant: SHA2.Variant) -> Array<UInt8> {
-    SHA2(variant: variant).calculate(for: bytes)
+    switch variant {
+    case .sha512_256:
+      let result = SHA2(variant: variant).calculate(for: bytes)
+      return Array(result.prefix(result.count / 2))
+    default:
+      return SHA2(variant: variant).calculate(for: bytes)
+    }
   }
 
   /// Calculate SHA3 Digest
